@@ -3,378 +3,619 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PS2 OPL - Monte seu Pendrive</title>
+    <title>Diogo Loader Store - PS2 OPL</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #1a1a2e;
-            color: #fff;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        h1 {
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #1a1a2e; color: white; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        
+        .logo {
             text-align: center;
             margin-bottom: 20px;
-            color: #ff6b35;
-        }
-
-        .pendrive-selector {
-            background: #16213e;
             padding: 20px;
+            background: linear-gradient(135deg, #ff6b35, #f39c12);
+            border-radius: 15px;
+        }
+        .logo h1 { font-size: 32px; letter-spacing: 2px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .logo p { font-size: 14px; opacity: 0.9; margin-top: 5px; }
+        
+        h2 { text-align: center; margin-bottom: 20px; color: #ff6b35; font-size: 20px; }
+        
+        .instrucoes-shopee { background: #ee4d2d; padding: 15px 20px; border-radius: 10px; margin-bottom: 20px; text-align: center; }
+        .instrucoes-shopee h3 { margin-bottom: 10px; }
+        .instrucoes-shopee p { margin-bottom: 5px; font-size: 14px; }
+        
+        .pendrive-selector { background: #16213e; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: center; }
+        .pendrive-btn { padding: 12px 30px; margin: 0 10px; background: #0f3460; border: none; border-radius: 8px; color: white; cursor: pointer; font-size: 16px; transition: all 0.3s; }
+        .pendrive-btn.active { background: #ff6b35; transform: scale(1.05); }
+        
+        .jogos-extras {
+            background: #16213e;
             border-radius: 10px;
+            padding: 20px;
             margin-bottom: 20px;
-            display: flex;
-            gap: 20px;
-            justify-content: center;
+            border: 2px solid #ff6b35;
         }
-
-        .pendrive-btn {
-            padding: 12px 30px;
-            font-size: 18px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-            background: #0f3460;
-            color: white;
-        }
-
-        .pendrive-btn.active {
-            background: #ff6b35;
-            transform: scale(1.05);
-        }
-
-        .info-bar {
+        .jogos-extras h3 { color: #ff6b35; margin-bottom: 10px; }
+        .jogos-extras h3 span { background: #ff6b35; color: #1a1a2e; padding: 2px 8px; border-radius: 20px; font-size: 12px; margin-left: 10px; }
+        .jogos-extras p { color: #aaa; font-size: 13px; margin-bottom: 15px; }
+        .extra-item {
             background: #0f3460;
             padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .progress-bar {
-            flex: 1;
-            height: 30px;
-            background: #1a1a2e;
-            border-radius: 15px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: #4ecdc4;
-            transition: width 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 12px;
-        }
-
-        .space-info {
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .game-card {
-            background: #16213e;
-            border-radius: 10px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.3s;
-            position: relative;
-        }
-
-        .game-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .game-card.selected {
-            border: 3px solid #4ecdc4;
-        }
-
-        .game-cover {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            background: #0f3460;
-        }
-
-        .game-info {
-            padding: 12px;
-        }
-
-        .game-title {
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .game-size {
-            font-size: 12px;
-            color: #4ecdc4;
-        }
-
-        .select-indicator {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #4ecdc4;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        .alert {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #ff6b35;
-            padding: 15px 25px;
             border-radius: 8px;
-            display: none;
-            z-index: 1000;
-            animation: slideIn 0.3s;
+            margin-bottom: 10px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
         }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-            }
-            to {
-                transform: translateX(0);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .games-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            }
-            
-            .game-cover {
-                height: 200px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>🎮 Monte seu Pendrive PS2 OPL</h1>
+        .extra-item input { flex: 1; padding: 10px; background: #1a1a2e; border: 1px solid #0f3460; border-radius: 5px; color: white; font-size: 14px; }
+        .extra-item .tamanho-fixo { background: #ff6b35; padding: 8px 12px; border-radius: 5px; font-size: 12px; font-weight: bold; }
+        .extra-item .remover-extra { background: #e74c3c; border: none; color: white; padding: 8px 12px; border-radius: 5px; cursor: pointer; }
+        .adicionar-extra { background: #2ecc71; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 10px; font-weight: bold; color: white; }
+        .adicionar-extra:disabled { background: #555; cursor: not-allowed; }
         
-        <div class="pendrive-selector">
-            <button class="pendrive-btn" onclick="selectPendrive(32)">32GB Pendrive</button>
-            <button class="pendrive-btn" onclick="selectPendrive(64)">64GB Pendrive</button>
-        </div>
-
-        <div class="info-bar">
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill">0%</div>
-            </div>
-            <div class="space-info">
-                📀 <span id="usedSpace">0</span> MB / <span id="totalSpace">0</span> MB
-            </div>
-            <div>
-                🎮 <span id="gameCount">0</span> jogos selecionados
-            </div>
-        </div>
-
-        <div class="games-grid" id="gamesGrid"></div>
-    </div>
-
-    <div id="alert" class="alert"></div>
-
-    <script>
-        // Lista de jogos (substitua pela sua lista real)
-        const jogos = [
-            { nome: "God of War II", tamanhoMB: 4500, capa: "https://via.placeholder.com/300x250/0f3460/fff?text=God+of+War+2" },
-            { nome: "Shadow of the Colossus", tamanhoMB: 1200, capa: "https://via.placeholder.com/300x250/0f3460/fff?text=Shadow+Colossus" },
-            { nome: "Final Fantasy X", tamanhoMB: 3800, capa: "https://via.placeholder.com/300x250/0f3460/fff?text=Final+Fantasy+X" },
-            { nome: "Dragon Ball Budokai Tenkaichi 3", tamanhoMB: 2800, capa: "https://via.placeholder.com/300x250/0f3460/fff?text=DBZ+BT+3" },
-            { nome: "Resident Evil 4", tamanhoMB: 2200, capa: "https://via.placeholder.com/300x250/0f3460/fff?text=RE+4" },
-            { nome: "GTA San Andreas", tamanhoMB: 3900, capa: "https://via.placeholder.com/300x250/0f3460/fff?text=GTA+SA" },
-            { nome: "Metal Gear Solid 3", tamanhoMB: 3500, capa: "https://via.placeholder.com/300x250/0f3460/fff?text=MGS+3" },
-            { nome: "Kingdom Hearts II", tamanhoMB: 3200, capa: "https://via.placeholder.com/300x250/0f3460/fff?text=Kingdom+Hearts+2" },
-            { nome: "Black", tamanhoMB: 2900, capa: "https://via.placeholder.com/300x250/0f3460/fff?text=Black" },
-            { nome: "Need for Speed Most Wanted", tamanhoMB: 2100, capa: "https://via.placeholder.com/300x250/0f3460/fff?text=NFS+MW" }
-        ];
-
-        let selectedPendrive = 32; // GB
-        let selectedGames = [];
+        .busca { background: #16213e; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+        .busca input { flex: 1; padding: 12px; font-size: 16px; border: none; border-radius: 5px; background: #0f3460; color: white; }
+        .busca input::placeholder { color: #aaa; }
+        .busca select { padding: 12px; background: #0f3460; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .limpar-btn { padding: 12px 20px; background: #e74c3c; border: none; border-radius: 5px; color: white; cursor: pointer; }
         
-        // Capacidades em MB (considerando espaço real do pendrive)
-        const capacities = {
-            32: 29000, // ~29GB utilizável
-            64: 58000  // ~58GB utilizável
-        };
-
-        function selectPendrive(size) {
-            selectedPendrive = size;
-            selectedGames = [];
-            updateUI();
-            
-            // Atualizar botões ativos
-            document.querySelectorAll('.pendrive-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-        }
-
-        function toggleGame(game) {
-            const gameIndex = selectedGames.findIndex(g => g.nome === game.nome);
-            const currentTotal = getTotalSize();
-            
-            if (gameIndex === -1) {
-                // Adicionar jogo
-                if (currentTotal + game.tamanhoMB <= capacities[selectedPendrive]) {
-                    selectedGames.push(game);
-                    showAlert(`✅ ${game.nome} adicionado!`, 'success');
-                } else {
-                    showAlert(`⚠️ Espaço insuficiente para ${game.nome}!`, 'error');
-                }
-            } else {
-                // Remover jogo
-                selectedGames.splice(gameIndex, 1);
-                showAlert(`❌ ${game.nome} removido!`, 'info');
-            }
-            
-            updateUI();
-        }
-
-        function getTotalSize() {
-            return selectedGames.reduce((total, game) => total + game.tamanhoMB, 0);
-        }
-
-        function updateUI() {
-            const totalSize = getTotalSize();
-            const capacity = capacities[selectedPendrive];
-            const percentage = (totalSize / capacity) * 100;
-            
-            // Atualizar progress bar
-            const progressFill = document.getElementById('progressFill');
-            progressFill.style.width = `${percentage}%`;
-            progressFill.textContent = `${Math.round(percentage)}%`;
-            
-            // Mudar cor da barra quando próximo do limite
-            if (percentage > 90) {
-                progressFill.style.background = '#ff6b35';
-            } else if (percentage > 70) {
-                progressFill.style.background = '#ffd93d';
-            } else {
-                progressFill.style.background = '#4ecdc4';
-            }
-            
-            // Atualizar informações de espaço
-            document.getElementById('usedSpace').textContent = totalSize;
-            document.getElementById('totalSpace').textContent = capacity;
-            document.getElementById('gameCount').textContent = selectedGames.length;
-            
-            // Atualizar grid de jogos
-            renderGamesGrid();
-        }
+        .info { background: #0f3460; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 15px; align-items: center; }
+        .barra-container { flex: 2; min-width: 200px; }
+        .barra { height: 30px; background: #1a1a2e; border-radius: 15px; overflow: hidden; }
+        .fill { height: 100%; background: #2ecc71; transition: width 0.3s; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; }
+        .stats { display: flex; gap: 20px; flex-wrap: wrap; }
+        .stat { background: #1a1a2e; padding: 8px 15px; border-radius: 20px; font-size: 14px; }
         
-        function renderGamesGrid() {
-            const grid = document.getElementById('gamesGrid');
-            grid.innerHTML = '';
-            
-            jogos.forEach(game => {
-                const isSelected = selectedGames.some(g => g.nome === game.nome);
-                const card = document.createElement('div');
-                card.className = `game-card ${isSelected ? 'selected' : ''}`;
-                card.onclick = () => toggleGame(game);
-                
-                card.innerHTML = `
-                    <img class="game-cover" src="${game.capa}" alt="${game.nome}">
-                    <div class="game-info">
-                        <div class="game-title">${game.nome}</div>
-                        <div class="game-size">${game.tamanhoMB} MB</div>
-                    </div>
-                    ${isSelected ? '<div class="select-indicator">✓</div>' : ''}
-                `;
-                
-                grid.appendChild(card);
-            });
-        }
+        .jogos { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; margin-bottom: 80px; }
+        .card { background: #16213e; border-radius: 10px; overflow: hidden; cursor: pointer; transition: all 0.3s; position: relative; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
+        .card.selecionado { border: 3px solid #2ecc71; }
+        .card img { width: 100%; height: 220px; object-fit: cover; background: #0f3460; }
+        .card .info-card { padding: 10px; background: #16213e; }
+        .card .nome { font-size: 14px; font-weight: bold; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card .tamanho { font-size: 11px; color: #2ecc71; }
+        .check { position: absolute; top: 10px; right: 10px; background: #2ecc71; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; z-index: 2; }
         
-        function showAlert(message, type) {
-            const alertDiv = document.getElementById('alert');
-            alertDiv.textContent = message;
-            alertDiv.style.display = 'block';
-            
-            if (type === 'error') {
-                alertDiv.style.background = '#e74c3c';
-            } else if (type === 'success') {
-                alertDiv.style.background = '#2ecc71';
-            } else {
-                alertDiv.style.background = '#3498db';
-            }
-            
-            setTimeout(() => {
-                alertDiv.style.display = 'none';
-            }, 2000);
-        }
+        .resumo-pedido { background: #16213e; border-radius: 10px; padding: 20px; margin-top: 20px; display: none; }
+        .resumo-pedido h3 { color: #ff6b35; margin-bottom: 15px; }
+        .lista-resumo { max-height: 300px; overflow-y: auto; margin-bottom: 15px; }
+        .item-resumo { background: #0f3460; padding: 10px; margin-bottom: 5px; border-radius: 5px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+        .item-resumo.extra { background: #ff6b3522; border-left: 3px solid #ff6b35; }
+        .copiar-btn { background: #2ecc71; color: white; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; width: 100%; font-size: 16px; font-weight: bold; }
+        .fechar-btn { background: #555; margin-top: 10px; }
         
-        // Inicializar
-        selectPendrive(32);
-        
-        // Botão para finalizar seleção e gerar pedido
-        const finishBtn = document.createElement('button');
-        finishBtn.textContent = '🛒 Finalizar Seleção';
-        finishBtn.style.cssText = `
+        .contador-resultados { background: #16213e; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; color: #aaa; }
+        .ver-resumo-btn {
             position: fixed;
             bottom: 20px;
             right: 20px;
             background: #ff6b35;
-            color: white;
-            border: none;
             padding: 15px 30px;
             border-radius: 50px;
-            font-size: 16px;
+            border: none;
+            color: white;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             z-index: 1000;
-        `;
+        }
+        .alerta { position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 8px; display: none; z-index: 1001; animation: slideIn 0.3s; }
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
         
-        finishBtn.onclick = () => {
-            if (selectedGames.length === 0) {
-                showAlert('⚠️ Selecione pelo menos um jogo!', 'error');
-                return;
-            }
-            
-            const gamesList = selectedGames.map(g => g.nome).join('\n');
-            const message = `Olá! Gostaria de comprar um pendrive de ${selectedPendrive}GB com os seguintes jogos:\n\n${gamesList}\n\nTotal: ${getTotalSize()}MB / ${capacities[selectedPendrive]}MB`;
-            
-            // Link para WhatsApp da loja (substitua pelo seu número)
-            const whatsappLink = `https://wa.me/5511999999999?text=${encodeURIComponent(message)}`;
-            window.open(whatsappLink, '_blank');
-        };
-        
-        document.body.appendChild(finishBtn);
-    </script>
+        @media (max-width: 600px) {
+            .jogos { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+            .card img { height: 170px; }
+            .stat { font-size: 12px; padding: 5px 10px; }
+            .extra-item { flex-direction: column; }
+            .logo h1 { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="logo">
+        <h1>🎮 DIOGO LOADER STORE 🎮</h1>
+        <p>PS2 OPL - Pendrive com jogos | Qualidade e confiança</p>
+    </div>
+    
+    <h2>📀 Monte seu Pendrive PS2 OPL</h2>
+    
+    <div class="instrucoes-shopee">
+        <h3>📌 Como pedir na Shopee:</h3>
+        <p>1️⃣ Escolha o pendrive (32GB ou 64GB)</p>
+        <p>2️⃣ Selecione os jogos da lista</p>
+        <p>3️⃣ Se quiser jogos que não estão na lista, adicione até 4 na seção "Jogos Extras"</p>
+        <p>4️⃣ Clique em "Ver Resumo" e copie o pedido</p>
+        <p>5️⃣ Cole no chat da Shopee e finalize a compra</p>
+    </div>
+    
+    <div class="pendrive-selector">
+        <button class="pendrive-btn" onclick="escolherPendrive(32)">💾 32GB (29GB útil)</button>
+        <button class="pendrive-btn" onclick="escolherPendrive(64)">💾 64GB (58GB útil)</button>
+    </div>
+    
+    <div class="jogos-extras">
+        <h3>🎲 Jogos Extras <span>Até 4 jogos</span></h3>
+        <p>📌 Quer um jogo que não está na lista? Adicione aqui! Cada jogo extra ocupa 4,6GB (4700 MB) independente do tamanho real.</p>
+        <div id="listaExtras"></div>
+        <button class="adicionar-extra" id="btnAdicionarExtra" onclick="adicionarJogoExtra()">➕ Adicionar jogo extra</button>
+    </div>
+    
+    <div class="busca">
+        <input type="text" id="busca" placeholder="🔍 Buscar jogo na lista..." onkeyup="buscarJogos()">
+        <select id="ordem" onchange="buscarJogos()">
+            <option value="nome">Ordenar: Nome (A-Z)</option>
+            <option value="nomeDesc">Ordenar: Nome (Z-A)</option>
+            <option value="tamanho">Ordenar: Menor tamanho</option>
+            <option value="tamanhoDesc">Ordenar: Maior tamanho</option>
+        </select>
+        <button class="limpar-btn" onclick="limparTudo()">🗑️ Limpar tudo</button>
+    </div>
+    
+    <div class="info">
+        <div class="barra-container">
+            <div class="barra"><div class="fill" id="barra">0%</div></div>
+        </div>
+        <div class="stats">
+            <div class="stat">📀 <span id="usado">0</span> MB / <span id="total">29000</span> MB</div>
+            <div class="stat">📦 <span id="qtd">0</span> jogos</div>
+            <div class="stat">✨ <span id="qtdExtras">0</span> extras</div>
+        </div>
+    </div>
+    
+    <div class="contador-resultados" id="contadorResultados"></div>
+    <div class="jogos" id="jogos"></div>
+    
+    <div class="resumo-pedido" id="resumoPedido">
+        <h3>📋 Seu pedido - Copie e cole no chat da Shopee</h3>
+        <div class="lista-resumo" id="listaResumo"></div>
+        <button class="copiar-btn" onclick="copiarPedido()">📋 Copiar pedido</button>
+        <button class="copiar-btn fechar-btn" onclick="fecharResumo()">✖️ Fechar</button>
+    </div>
+</div>
+
+<button class="ver-resumo-btn" onclick="mostrarResumo()">🛒 Ver Resumo do Pedido</button>
+<div id="alerta" class="alerta"></div>
+
+<script>
+const TAMANHO_EXTRA = 4700;
+const MAX_EXTRAS = 4;
+let jogosExtras = [];
+let pendriveAtual = 32;
+let selecionados = [];
+let termoBusca = '';
+const CAPACIDADES = { 32: 29000, 64: 58000 };
+
+// ==================== FUNÇÃO DE CAPAS POR SERIAL ====================
+function getCapaUrl(jogo) {
+    // 1. Se tiver serial, busca a capa pelo código
+    if (jogo.serial) {
+        // Remove espaços e formata corretamente
+        const serialLimpo = jogo.serial.replace(/\s/g, '');
+        return `https://raw.githubusercontent.com/xlenore/ps2-covers/main/covers/default/${serialLimpo}.jpg`;
+    }
+    
+    // 2. Se tiver capa manual (capa personalizada)
+    if (jogo.capa) {
+        return jogo.capa;
+    }
+    
+    // 3. Fallback: placeholder com o nome
+    return `https://via.placeholder.com/300x220/0f3460/fff?text=${encodeURIComponent(jogo.nome)}`;
+}
+
+// ==================== LISTA COMPLETA DE JOGOS COM SERIAIS CORRIGIDOS ====================
+const TODOS_JOGOS = [
+    // ============ PRIMEIRA LISTA ============
+    { nome: "Alone In The Dark", tamanhoMB: 4300, serial: "SLUS-21690" },
+    { nome: "Berserk Millennium Falcon", tamanhoMB: 3584, serial: "SLPM-65688" },
+    { nome: "Beyond Good And Evil", tamanhoMB: 1946, serial: "SLUS-20763" },
+    { nome: "Biohazard Outbreak", tamanhoMB: 3994, serial: "SLPM-65428" },
+    { nome: "Bomba Patch 2011", tamanhoMB: 1638, serial: "SLUS-21464" },
+    { nome: "Bully", tamanhoMB: 3584, serial: "SLUS-21269" },
+    { nome: "Burnout 3 Takedown", tamanhoMB: 2765, serial: "SLUS-21050" },
+    { nome: "Call of Duty Finest Hour", tamanhoMB: 2150, serial: "SLUS-20725" },
+    { nome: "Capcom vs SNK 2", tamanhoMB: 214, serial: "SLUS-20246" },
+    { nome: "Champions Return to Arms", tamanhoMB: 4096, serial: "SLUS-20973" },
+    { nome: "Chronicles of Narnia", tamanhoMB: 2560, serial: "SLUS-21082" },
+    { nome: "Cold Fear", tamanhoMB: 3379, serial: "SLUS-21047" },
+    { nome: "Coraline", tamanhoMB: 4403, serial: "SLUS-21854" },
+    { nome: "Crash Nitro Kart", tamanhoMB: 3072, serial: "SLUS-20649" },
+    { nome: "Crash Tag Team Racing", tamanhoMB: 3379, serial: "SLUS-21191" },
+    { nome: "Crash Twinsanity", tamanhoMB: 2048, serial: "SLUS-20909" },
+    { nome: "Dave Mira Freestyle BMX 2", tamanhoMB: 599, serial: "SLUS-20159" },
+    { nome: "Def Jam Fight For NY", tamanhoMB: 4506, serial: "SLUS-21004" },
+    { nome: "Destroy All Humans", tamanhoMB: 4403, serial: "SLUS-20945" },
+    { nome: "Desventuras em Serie", tamanhoMB: 2355, serial: "SLUS-21078" },
+    { nome: "Devil May Cry 1", tamanhoMB: 2150, serial: "SLUS-20216" },
+    { nome: "Devil May Cry 3", tamanhoMB: 3686, serial: "SLUS-21361" },
+    { nome: "Downhill Domination", tamanhoMB: 2458, serial: "SCUS-97177" },
+    { nome: "Drakan The Ancients Gates", tamanhoMB: 1741, serial: "SCUS-97128" },
+    { nome: "DreamWorks Bee Movie Game", tamanhoMB: 1638, serial: "SLUS-21622" },
+    { nome: "Eternal Ring", tamanhoMB: 2253, serial: "SLUS-20015" },
+    { nome: "Extermination", tamanhoMB: 3174, serial: "SCUS-97112" },
+    { nome: "FIFA Street 2", tamanhoMB: 4506, serial: "SLES-53796" },
+    { nome: "Final Fantasy X", tamanhoMB: 4300, serial: "SLUS-20312" },
+    { nome: "Freekstyle", tamanhoMB: 550, serial: "SLUS-20367" },
+    { nome: "Genji Dawn of the Samurai", tamanhoMB: 2867, serial: "SCUS-97471" },
+    { nome: "God Hand", tamanhoMB: 1536, serial: "SLUS-21503" },
+    { nome: "God of War", tamanhoMB: 3072, serial: "SCUS-97399" },
+    { nome: "God of War II", tamanhoMB: 4096, serial: "SCUS-97481" },
+    { nome: "Gran Turismo 4", tamanhoMB: 4506, serial: "SCUS-97328" },
+    { nome: "GTA III", tamanhoMB: 2458, serial: "SLUS-20062" },
+    { nome: "GTA Liberty City Stories", tamanhoMB: 3789, serial: "SLUS-21423" },
+    { nome: "GTA San Andreas", tamanhoMB: 4300, serial: "SLUS-20946" },
+    { nome: "GTA Vice City", tamanhoMB: 4403, serial: "SLUS-20552" },
+    { nome: "GTA Vice City Stories", tamanhoMB: 2048, serial: "SLUS-21590" },
+    { nome: "Guitar Hero", tamanhoMB: 2150, serial: "SLUS-21224" },
+    { nome: "Gun", tamanhoMB: 1741, serial: "SLUS-21139" },
+    { nome: "Harry Potter e a Camara Secreta", tamanhoMB: 536, serial: "SLUS-20576" },
+    { nome: "Ico", tamanhoMB: 467, serial: "SCUS-97113" },
+    { nome: "Jak and Daxter Precursor Legacy", tamanhoMB: 1434, serial: "SCUS-97124" },
+    { nome: "Just Cause", tamanhoMB: 2560, serial: "SLUS-21436" },
+    { nome: "King Arthur", tamanhoMB: 2662, serial: "SLUS-21046" },
+    { nome: "Kingdom Hearts", tamanhoMB: 3482, serial: "SLUS-20370" },
+    { nome: "LEGO Batman", tamanhoMB: 2048, serial: "SLUS-21785" },
+    { nome: "Max Payne 2", tamanhoMB: 2458, serial: "SLUS-20814" },
+    { nome: "Medal of Honor Vanguard", tamanhoMB: 1229, serial: "SLUS-21597" },
+    { nome: "Metal Gear Solid 2", tamanhoMB: 4403, serial: "SLUS-20144" },
+    { nome: "Metal Gear Solid 3", tamanhoMB: 4506, serial: "SLUS-21359" },
+    { nome: "Midnight Club 3 DUB Edition", tamanhoMB: 4403, serial: "SLUS-21029" },
+    { nome: "MK Shaolin Monks", tamanhoMB: 3379, serial: "SLUS-21087" },
+    { nome: "Moranguinho", tamanhoMB: 448, serial: "SLUS-21497" },
+    { nome: "Mortal Kombat Armageddon", tamanhoMB: 4198, serial: "SLUS-21543" },
+    { nome: "MTX Mototrax", tamanhoMB: 4096, serial: "SLUS-20399" },
+    { nome: "MX VS ATV Unleashed", tamanhoMB: 4300, serial: "SLUS-21104" },
+    { nome: "NBA Street V3", tamanhoMB: 4506, serial: "SLUS-21126" },
+    { nome: "Need for Speed Underground 2", tamanhoMB: 2765, serial: "SLUS-21065" },
+    { nome: "Nintendinho", tamanhoMB: 1126, serial: "" },
+    { nome: "Odin Sphere", tamanhoMB: 3277, serial: "SLUS-21577" },
+    { nome: "Okami", tamanhoMB: 3789, serial: "SLUS-21115" },
+    { nome: "Onimusha Warlords", tamanhoMB: 3891, serial: "SLUS-20018" },
+    { nome: "Os Incriveis", tamanhoMB: 1024, serial: "SLUS-21217" },
+    { nome: "PES 2013", tamanhoMB: 2048, serial: "SLUS-21955" },
+    { nome: "PES 5", tamanhoMB: 2150, serial: "SLES-53544" },
+    { nome: "Peter Jackson's King Kong", tamanhoMB: 1229, serial: "SLUS-21311" },
+    { nome: "Pirates of the Caribbean", tamanhoMB: 1946, serial: "SLUS-21110" },
+    { nome: "Prince of Persia Sands of Time", tamanhoMB: 2355, serial: "SLUS-20743" },
+    { nome: "Prince of Persia Warrior Within", tamanhoMB: 3686, serial: "SLUS-21022" },
+    { nome: "Quake III - Revolution", tamanhoMB: 619, serial: "SLUS-20167" },
+    { nome: "Ratatouille", tamanhoMB: 1229, serial: "SLUS-21541" },
+    { nome: "Ready 2 Rumble Boxing - Round 2", tamanhoMB: 611, serial: "SLUS-20054" },
+    { nome: "Red Dead Revolver", tamanhoMB: 2253, serial: "SLUS-20500" },
+    { nome: "Resident Evil 4", tamanhoMB: 4198, serial: "SLUS-21134" },
+    { nome: "Resident Evil Code Veronica X", tamanhoMB: 2560, serial: "SLUS-20184" },
+    { nome: "Scarface The World Is Yours", tamanhoMB: 3482, serial: "SLES-54182" },
+    { nome: "Scooby Doo First Fights", tamanhoMB: 2560, serial: "SLUS-21900" },
+    { nome: "Shadow of Destiny", tamanhoMB: 4096, serial: "SLUS-20146" },
+    { nome: "Shadow of Rome", tamanhoMB: 4506, serial: "SLUS-20902" },
+    { nome: "Shadow of the Colossus", tamanhoMB: 2560, serial: "SCUS-97472" },
+    { nome: "Silent Hill 2", tamanhoMB: 3686, serial: "SLUS-20228" },
+    { nome: "Silent Hill 3", tamanhoMB: 3482, serial: "SLUS-20622" },
+    { nome: "Sly 2 Band of Thieves", tamanhoMB: 4403, serial: "SCUS-97316" },
+    { nome: "Spider-Man - Friend or Foe", tamanhoMB: 3994, serial: "SLUS-21600" },
+    { nome: "Stuart Little 3", tamanhoMB: 4096, serial: "SLUS-21341" },
+    { nome: "Summer Heat Beach Volleyball", tamanhoMB: 1741, serial: "SLUS-20634" },
+    { nome: "Tekken 5", tamanhoMB: 4300, serial: "SLUS-21059" },
+    { nome: "The Godfather", tamanhoMB: 2765, serial: "SLUS-21385" },
+    { nome: "The Golden Compass", tamanhoMB: 2355, serial: "SLUS-21677" },
+    { nome: "The Mark Of Kri", tamanhoMB: 2560, serial: "SCUS-97140" },
+    { nome: "The Simpsons Hit & Run", tamanhoMB: 2048, serial: "SLUS-20624" },
+    { nome: "The Warriors", tamanhoMB: 4096, serial: "SLUS-21215" },
+    { nome: "Tony Hawks Pro Skater 3", tamanhoMB: 4403, serial: "SLUS-20731" },
+    { nome: "Tony Hawks Underground", tamanhoMB: 3174, serial: "SLUS-20965" },
+    { nome: "Toy Story 3", tamanhoMB: 1229, serial: "SLUS-21931" },
+    { nome: "Urban Freestyle Soccer", tamanhoMB: 349, serial: "SLES-50849" },
+    { nome: "Virtua Tennis 2", tamanhoMB: 427, serial: "SLUS-20480" },
+    { nome: "Woody Woodpecker", tamanhoMB: 4096, serial: "SLUS-20341" },
+    { nome: "WWE 2006", tamanhoMB: 1638, serial: "SLES-53676" },
+    { nome: "X-Men Legends II", tamanhoMB: 3891, serial: "SLUS-21138" },
+
+    // ============ SEGUNDA LISTA ============
+    { nome: "Shellshock: Nam '67", tamanhoMB: 3100, serial: "SLUS-20828" },
+    { nome: "Call of Duty 2: Big Red One", tamanhoMB: 2700, serial: "SLUS-21228" },
+    { nome: "GoldenEye: Rogue Agent", tamanhoMB: 2600, serial: "SLUS-21064" },
+    { nome: "Battle Stadium D.O.N", tamanhoMB: 218, serial: "SLPS-25675" },
+    { nome: "Silent Hill: Origins", tamanhoMB: 2690, serial: "SLUS-21731" },
+    { nome: "Blade II", tamanhoMB: 688, serial: "SLUS-20360" },
+    { nome: "Kung Fu Panda", tamanhoMB: 966, serial: "SLUS-21757" },
+    { nome: "TimeSplitters", tamanhoMB: 596, serial: "SLUS-20090" },
+    { nome: "Chaos Legion", tamanhoMB: 1638, serial: "SLUS-20695" },
+    { nome: "Medal of Honor: European Assault", tamanhoMB: 1065, serial: "SLUS-21199" },
+    { nome: "Resident Evil: Dead Aim", tamanhoMB: 1800, serial: "SLUS-20669" },
+    { nome: "Raw Danger", tamanhoMB: 2100, serial: "SLUS-21501" },
+    { nome: "Monster House", tamanhoMB: 1200, serial: "SLES-54215" },
+    { nome: "Avatar: The Legend of Aang", tamanhoMB: 1300, serial: "SLUS-21804" },
+    { nome: "Avatar: The Burning Earth", tamanhoMB: 1400, serial: "SLUS-21588" },
+    { nome: "Guitar Hero III: Legends of Rock", tamanhoMB: 3100, serial: "SLUS-21672" },
+    { nome: "Baroque", tamanhoMB: 950, serial: "SLUS-21714" },
+    { nome: "RPM Tuning", tamanhoMB: 800, serial: "SLES-52190" },
+    { nome: "Ben 10: Protector of Earth", tamanhoMB: 1200, serial: "SLUS-21661" },
+    { nome: "Castlevania: Curse of Darkness", tamanhoMB: 3800, serial: "SLUS-21168" },
+    { nome: "Ben 10: Cosmic Destruction", tamanhoMB: 1500, serial: "SLUS-21938" },
+    { nome: "Naruto: Uzumaki Chronicles 2", tamanhoMB: 1900, serial: "SLUS-21498" },
+    { nome: "Ben 10: Vilgax Attacks", tamanhoMB: 1600, serial: "SLUS-21921" },
+    { nome: "Guitar Hero II", tamanhoMB: 2900, serial: "SLUS-21447" },
+    { nome: "Leisure Suit Larry: Magna Cum Laude", tamanhoMB: 2400, serial: "SLUS-20956" },
+    { nome: "Sonic Heroes", tamanhoMB: 2900, serial: "SLUS-20718" },
+    { nome: "Ghost Rider", tamanhoMB: 2300, serial: "SLES-54317" },
+    { nome: "Fatal Frame III: The Tormented", tamanhoMB: 2900, serial: "SLUS-21143" },
+    { nome: "Fatal Frame II: Crimson Butterfly", tamanhoMB: 2800, serial: "SLUS-20766" },
+    { nome: "Fatal Frame", tamanhoMB: 2700, serial: "SLUS-20388" },
+    { nome: "Rule of Rose", tamanhoMB: 2500, serial: "SLUS-21448" },
+    { nome: "Colin McRae Rally", tamanhoMB: 900, serial: "SLES-52636" },
+    { nome: "Ruff Trigger", tamanhoMB: 1000, serial: "SLUS-21314" },
+    { nome: "Neo Contra", tamanhoMB: 1300, serial: "SLUS-20961" },
+    { nome: "True Crime: Streets of LA", tamanhoMB: 3700, serial: "SLUS-20550" },
+    { nome: "Contra: Shattered Soldier", tamanhoMB: 1100, serial: "SLUS-20306" },
+    { nome: "Driver: Parallel Lines", tamanhoMB: 3400, serial: "SLUS-21271" },
+    { nome: "Batman Begins", tamanhoMB: 2100, serial: "SLUS-21198" },
+    { nome: "Killzone", tamanhoMB: 3900, serial: "SCUS-97402" },
+    { nome: "Justice League Heroes", tamanhoMB: 2800, serial: "SLES-54423" },
+    { nome: "Urban Reign", tamanhoMB: 1300, serial: "SLUS-21209" },
+    { nome: "Star Wars: Episode III - Revenge of the Sith", tamanhoMB: 2800, serial: "SLUS-21143" },
+    { nome: "Glass Rose", tamanhoMB: 2200, serial: "SLES-52358" },
+    { nome: "The Suffering", tamanhoMB: 3300, serial: "SLUS-20636" },
+    { nome: "Project Altered Beast", tamanhoMB: 1900, serial: "SLES-53024" },
+    { nome: "Evil Dead: Regeneration", tamanhoMB: 2400, serial: "SLUS-21048" },
+    { nome: "Black", tamanhoMB: 2900, serial: "SLUS-21376" },
+    { nome: "Half-Life", tamanhoMB: 1800, serial: "SLUS-20066" },
+    { nome: "Naruto: Ultimate Ninja 5", tamanhoMB: 1400, serial: "SLES-55605" },
+    { nome: "Mortal Kombat: Deception", tamanhoMB: 3900, serial: "SLUS-20881" },
+    { nome: "Star Wars: The Force Unleashed", tamanhoMB: 3900, serial: "SLUS-21614" },
+    { nome: "Wacky Races", tamanhoMB: 700, serial: "SLES-54670" },
+    { nome: "Circuit Breakers", tamanhoMB: 450, serial: "SLES-53090" },
+    { nome: "SpongeBob SquarePants: Battle for Bikini Bottom", tamanhoMB: 1400, serial: "SLUS-20680" },
+    { nome: "Spider-Man 2", tamanhoMB: 3400, serial: "SLUS-20776" },
+    { nome: "Echo Night: Beyond", tamanhoMB: 2000, serial: "SLUS-20928" },
+    { nome: "Cars", tamanhoMB: 2400, serial: "SLUS-21151" },
+    { nome: "Mega Man X8", tamanhoMB: 1400, serial: "SLUS-20960" },
+    { nome: "Gradius V", tamanhoMB: 800, serial: "SLUS-20712" },
+    { nome: "Crash of the Titans", tamanhoMB: 2700, serial: "SLUS-21583" },
+    { nome: "Spartan: Total Warrior", tamanhoMB: 2800, serial: "SLUS-21212" },
+    { nome: "Prince of Persia: The Two Thrones", tamanhoMB: 2800, serial: "SLUS-21287" },
+    { nome: "Haunting Ground", tamanhoMB: 3100, serial: "SLES-52877" },
+    { nome: "Persona 3 FES", tamanhoMB: 4400, serial: "SLUS-21621" },
+    { nome: "Ultimate Spider-Man", tamanhoMB: 2900, serial: "SLUS-20870" },
+    { nome: "Pro Beach Soccer", tamanhoMB: 500, serial: "SLES-51492" },
+    { nome: "Harry Potter and the Sorcerer's Stone", tamanhoMB: 1400, serial: "SLUS-20826" },
+    { nome: "The Lord of the Rings: The Return of the King", tamanhoMB: 3100, serial: "SLUS-20520" },
+    { nome: "The Sims 2", tamanhoMB: 2400, serial: "SLUS-21265" },
+    { nome: "Maximo vs. Army of Zin", tamanhoMB: 1100, serial: "SLUS-20722" },
+    { nome: "Kuon", tamanhoMB: 2600, serial: "SLUS-21007" },
+    { nome: "Persona 4", tamanhoMB: 4500, serial: "SLUS-21782" },
+    { nome: "Jak 3", tamanhoMB: 2800, serial: "SCUS-97330" },
+    { nome: "Jak and Daxter: The Lost Frontier", tamanhoMB: 2100, serial: "SCUS-97558" },
+    { nome: "Jak II", tamanhoMB: 2800, serial: "SCUS-97265" },
+    { nome: "Pro Evolution Soccer 2009", tamanhoMB: 2100, serial: "SLUS-21821" },
+    { nome: "Harry Potter and the Goblet of Fire", tamanhoMB: 1700, serial: "SLUS-21325" },
+    { nome: "Hugo: Bukkazoom", tamanhoMB: 400, serial: "SLES-52102" },
+    { nome: "Dragon Ball Z: Budokai Tenkaichi 3", tamanhoMB: 2800, serial: "SLUS-21678" },
+    { nome: "Hulk", tamanhoMB: 2900, serial: "SLUS-21765" },
+    { nome: "Jackie Chan Adventures", tamanhoMB: 1100, serial: "SCES-52412" },
+    { nome: "Manhunt", tamanhoMB: 3200, serial: "SLUS-20827" },
+    { nome: "Manhunt 2", tamanhoMB: 3100, serial: "SLUS-21613" },
+    { nome: "LEGO Indiana Jones", tamanhoMB: 2000, serial: "SLUS-21759" },
+    { nome: "Hitman 2: Silent Assassin", tamanhoMB: 1900, serial: "SLUS-20374" },
+    { nome: "Max Payne", tamanhoMB: 1800, serial: "SLUS-20230" },
+    { nome: "Darkwatch", tamanhoMB: 2500, serial: "SLUS-21042" },
+    { nome: "Need for Speed: Carbon", tamanhoMB: 3400, serial: "SLUS-21493" },
+    { nome: "Need for Speed: Most Wanted", tamanhoMB: 3900, serial: "SLUS-21267" },
+    { nome: "LEGO Star Wars", tamanhoMB: 1500, serial: "SLUS-21083" },
+    { nome: "LEGO Star Wars II: The Original Trilogy", tamanhoMB: 1800, serial: "SLUS-21409" },
+    { nome: "Tomb Raider: The Angel of Darkness", tamanhoMB: 3700, serial: "SLUS-20467" },
+    { nome: "Obscure", tamanhoMB: 2500, serial: "SLUS-20777" },
+    { nome: "Obscure II", tamanhoMB: 2700, serial: "SLUS-21709" },
+    { nome: "Resident Evil: Outbreak File #2", tamanhoMB: 3800, serial: "SLUS-20984" },
+    { nome: "Kingdom Hearts II", tamanhoMB: 3900, serial: "SLUS-21005" },
+    { nome: "Final Fantasy XII", tamanhoMB: 4600, serial: "SLUS-20963" }
+];
+
+function getTotalExtrasSize() { return jogosExtras.length * TAMANHO_EXTRA; }
+function getTotalSelecionadoSize() { return selecionados.reduce((s, j) => s + j.tamanhoMB, 0) + getTotalExtrasSize(); }
+
+function atualizarInterfaceExtras() {
+    const container = document.getElementById('listaExtras');
+    const btn = document.getElementById('btnAdicionarExtra');
+    if (jogosExtras.length >= MAX_EXTRAS) { 
+        btn.disabled = true; 
+        btn.textContent = `❌ Máximo de ${MAX_EXTRAS} jogos extras atingido`; 
+    } else { 
+        btn.disabled = false; 
+        btn.textContent = `➕ Adicionar jogo extra (${jogosExtras.length}/${MAX_EXTRAS})`; 
+    }
+    container.innerHTML = jogosExtras.map((extra, index) => `<div class="extra-item"><input type="text" value="${extra.nome.replace(/"/g, '&quot;')}" placeholder="Nome do jogo extra" onchange="atualizarNomeExtra(${index}, this.value)"><span class="tamanho-fixo">📀 4,6 GB (fixo)</span><button class="remover-extra" onclick="removerJogoExtra(${index})">🗑️ Remover</button></div>`).join('');
+    document.getElementById('qtdExtras').textContent = jogosExtras.length;
+    atualizarTudo();
+}
+
+function adicionarJogoExtra() {
+    if (jogosExtras.length >= MAX_EXTRAS) { 
+        mostrarAlerta(`⚠️ Máximo de ${MAX_EXTRAS} jogos extras permitidos!`, '#e74c3c'); 
+        return; 
+    }
+    const totalAtual = getTotalSelecionadoSize();
+    if (totalAtual + TAMANHO_EXTRA > CAPACIDADES[pendriveAtual]) { 
+        const restante = CAPACIDADES[pendriveAtual] - totalAtual; 
+        mostrarAlerta(`⚠️ Espaço insuficiente! Restam apenas ${restante} MB`, '#e74c3c'); 
+        return; 
+    }
+    jogosExtras.push({ nome: "Novo Jogo Extra" });
+    atualizarInterfaceExtras();
+    mostrarAlerta(`✨ Jogo extra adicionado! (ocupa 4,6 GB)`, '#2ecc71');
+}
+
+function atualizarNomeExtra(index, novoNome) { 
+    jogosExtras[index].nome = novoNome.trim() === "" ? "Jogo Extra sem nome" : novoNome; 
+    atualizarInterfaceExtras(); 
+}
+
+function removerJogoExtra(index) { 
+    const nome = jogosExtras[index].nome; 
+    jogosExtras.splice(index, 1); 
+    atualizarInterfaceExtras(); 
+    mostrarAlerta(`❌ ${nome} removido dos extras`, '#3498db'); 
+}
+
+function escolherPendrive(tamanho) {
+    pendriveAtual = tamanho;
+    selecionados = [];
+    jogosExtras = [];
+    atualizarInterfaceExtras();
+    atualizarTudo();
+    document.getElementById('resumoPedido').style.display = 'none';
+    document.querySelectorAll('.pendrive-btn').forEach((btn, i) => { 
+        btn.classList.remove('active'); 
+        if ((tamanho === 32 && i === 0) || (tamanho === 64 && i === 1)) btn.classList.add('active'); 
+    });
+}
+
+function toggleJogo(jogo) {
+    const existe = selecionados.find(j => j.nome === jogo.nome);
+    const totalAtual = getTotalSelecionadoSize();
+    if (!existe) {
+        if (totalAtual + jogo.tamanhoMB <= CAPACIDADES[pendriveAtual]) { 
+            selecionados.push(jogo); 
+            mostrarAlerta(`✅ ${jogo.nome} adicionado!`, '#2ecc71'); 
+        } else { 
+            const restante = CAPACIDADES[pendriveAtual] - totalAtual; 
+            mostrarAlerta(`⚠️ Espaço insuficiente! Restam ${restante} MB`, '#e74c3c'); 
+        }
+    } else { 
+        selecionados = selecionados.filter(j => j.nome !== jogo.nome); 
+        mostrarAlerta(`❌ ${jogo.nome} removido`, '#3498db'); 
+    }
+    atualizarTudo();
+    document.getElementById('resumoPedido').style.display = 'none';
+}
+
+function atualizarTudo() {
+    const totalSelecionado = getTotalSelecionadoSize();
+    const capacidade = CAPACIDADES[pendriveAtual];
+    const percentual = (totalSelecionado / capacidade) * 100;
+    const barra = document.getElementById('barra');
+    barra.style.width = percentual + '%';
+    barra.textContent = Math.round(percentual) + '%';
+    if (percentual > 90) barra.style.background = '#e74c3c';
+    else if (percentual > 70) barra.style.background = '#f39c12';
+    else barra.style.background = '#2ecc71';
+    document.getElementById('usado').textContent = totalSelecionado;
+    document.getElementById('total').textContent = capacidade;
+    document.getElementById('qtd').textContent = selecionados.length;
+    renderizarJogos();
+}
+
+function buscarJogos() { 
+    termoBusca = document.getElementById('busca').value; 
+    renderizarJogos(); 
+}
+
+function renderizarJogos() {
+    let filtrados = [...TODOS_JOGOS];
+    if (termoBusca) {
+        filtrados = filtrados.filter(jogo => jogo.nome.toLowerCase().includes(termoBusca.toLowerCase()));
+    }
+    const ordem = document.getElementById('ordem').value;
+    switch(ordem) {
+        case 'nome': filtrados.sort((a, b) => a.nome.localeCompare(b.nome)); break;
+        case 'nomeDesc': filtrados.sort((a, b) => b.nome.localeCompare(a.nome)); break;
+        case 'tamanho': filtrados.sort((a, b) => a.tamanhoMB - b.tamanhoMB); break;
+        case 'tamanhoDesc': filtrados.sort((a, b) => b.tamanhoMB - a.tamanhoMB); break;
+    }
+    document.getElementById('contadorResultados').innerHTML = `📋 Mostrando ${filtrados.length} de ${TODOS_JOGOS.length} jogos`;
+    const grid = document.getElementById('jogos');
+    if (filtrados.length === 0) { 
+        grid.innerHTML = '<div style="text-align:center;padding:50px;">🔍 Nenhum jogo encontrado</div>'; 
+        return; 
+    }
+    grid.innerHTML = filtrados.map(jogo => {
+        const isSelected = selecionados.find(j => j.nome === jogo.nome);
+        const tamanhoGB = (jogo.tamanhoMB / 1024).toFixed(1);
+        const capaUrl = getCapaUrl(jogo);
+        return `<div class="card ${isSelected ? 'selecionado' : ''}" onclick='toggleJogo(${JSON.stringify(jogo)})'><img src="${capaUrl}" alt="${jogo.nome}" onerror="this.src='https://via.placeholder.com/300x220/0f3460/fff?text=${encodeURIComponent(jogo.nome)}'"><div class="info-card"><div class="nome">${jogo.nome}</div><div class="tamanho">${jogo.tamanhoMB} MB (${tamanhoGB} GB)</div></div>${isSelected ? '<div class="check">✓</div>' : ''}</div>`;
+    }).join('');
+}
+
+function limparTudo() {
+    if (selecionados.length === 0 && jogosExtras.length === 0) { 
+        mostrarAlerta('⚠️ Nenhum jogo selecionado!', '#e74c3c'); 
+        return; 
+    }
+    selecionados = [];
+    jogosExtras = [];
+    atualizarInterfaceExtras();
+    atualizarTudo();
+    document.getElementById('resumoPedido').style.display = 'none';
+    mostrarAlerta('🗑️ Todos os jogos foram removidos!', '#3498db');
+}
+
+function mostrarResumo() {
+    if (selecionados.length === 0 && jogosExtras.length === 0) { 
+        mostrarAlerta('⚠️ Selecione pelo menos um jogo!', '#e74c3c'); 
+        return; 
+    }
+    const totalMB = getTotalSelecionadoSize();
+    const totalGB = (totalMB / 1024).toFixed(1);
+    const restante = CAPACIDADES[pendriveAtual] - totalMB;
+    let listaHtml = `<div class="item-resumo" style="background:#ff6b35"><span><strong>💾 Pendrive ${pendriveAtual}GB</strong></span><span><strong>${totalMB} MB / ${CAPACIDADES[pendriveAtual]} MB</strong></span></div>`;
+    if (selecionados.length > 0) { 
+        listaHtml += `<div class="item-resumo" style="background:#0f3460; margin-top:10px"><strong>📀 JOGOS DA LISTA (${selecionados.length}):</strong></div>`; 
+        selecionados.forEach((j, i) => { 
+            listaHtml += `<div class="item-resumo"><span>${i+1}️⃣ ${j.nome}</span><span>${j.tamanhoMB} MB (${(j.tamanhoMB/1024).toFixed(1)} GB)</span></div>`; 
+        }); 
+    }
+    if (jogosExtras.length > 0) { 
+        listaHtml += `<div class="item-resumo" style="background:#0f3460; margin-top:10px"><strong>✨ JOGOS EXTRAS (${jogosExtras.length}):</strong></div>`; 
+        jogosExtras.forEach((extra, i) => { 
+            listaHtml += `<div class="item-resumo extra"><span>✨ ${extra.nome}</span><span>${TAMANHO_EXTRA} MB (4,6 GB) - fixo</span></div>`; 
+        }); 
+    }
+    listaHtml += `<div class="item-resumo" style="background:#0f3460; margin-top:10px"><span>📊 Total:</span><span>${totalMB} MB (${totalGB} GB)</span></div><div class="item-resumo" style="background:#0f3460"><span>📀 Espaço restante:</span><span>${restante} MB (${(restante/1024).toFixed(1)} GB)</span></div><div class="item-resumo" style="background:#0f3460"><span>🎮 Total de jogos:</span><span>${selecionados.length + jogosExtras.length}</span></div>`;
+    document.getElementById('listaResumo').innerHTML = listaHtml;
+    document.getElementById('resumoPedido').style.display = 'block';
+    document.getElementById('resumoPedido').scrollIntoView({ behavior: 'smooth' });
+}
+
+function fecharResumo() { document.getElementById('resumoPedido').style.display = 'none'; }
+
+function copiarPedido() {
+    const totalMB = getTotalSelecionadoSize();
+    const totalGB = (totalMB / 1024).toFixed(1);
+    const restante = CAPACIDADES[pendriveAtual] - totalMB;
+    let texto = `🎮 DIOGO LOADER STORE - PEDIDO PS2 OPL 🎮\n\n`;
+    texto += `💾 Pendrive: ${pendriveAtual}GB\n`;
+    texto += `📀 Espaço usado: ${totalMB}MB (${totalGB}GB)\n\n`;
+    if (selecionados.length > 0) { 
+        texto += `📋 JOGOS DA LISTA:\n─────────────────────\n`; 
+        selecionados.forEach((j, i) => { 
+            texto += `${i+1}. ${j.nome} - ${j.tamanhoMB}MB (${(j.tamanhoMB/1024).toFixed(1)}GB)\n`; 
+        }); 
+        texto += `\n`; 
+    }
+    if (jogosExtras.length > 0) { 
+        texto += `✨ JOGOS EXTRAS (fora da lista):\n─────────────────────\n`; 
+        jogosExtras.forEach((extra, i) => { 
+            texto += `${i+1}. ${extra.nome} - ${TAMANHO_EXTRA}MB (4,6GB) - tamanho fixo\n`; 
+        }); 
+        texto += `\n`; 
+    }
+    texto += `─────────────────────\n📊 Total: ${totalMB}MB (${totalGB}GB)\n📀 Espaço restante: ${restante}MB (${(restante/1024).toFixed(1)}GB)\n🎮 Quantidade total: ${selecionados.length + jogosExtras.length} jogos`;
+    navigator.clipboard.writeText(texto);
+    mostrarAlerta('📋 Pedido copiado! Cole no chat da Shopee', '#2ecc71');
+}
+
+function mostrarAlerta(msg, cor) { 
+    const alerta = document.getElementById('alerta'); 
+    alerta.textContent = msg; 
+    alerta.style.background = cor; 
+    alerta.style.display = 'block'; 
+    setTimeout(() => alerta.style.display = 'none', 2500); 
+}
+
+escolherPendrive(32);
+</script>
 </body>
 </html>
